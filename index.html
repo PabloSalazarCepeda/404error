@@ -1,101 +1,51 @@
+<!-- demo/index.html -->
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portafolio SPA</title>
-    <script type="module" src="/src/main.js"></script>
-  </head>
-  <body>
-    <!-- Skip link para accesibilidad -->
-    <a
-      href="#app"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Saltar al contenido principal
-    </a>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Portfolio SPA — HTML Template</title>
+		<link rel="stylesheet" href="./src/style.css" />
+		<script type="module" src="./src/main.js"></script>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-50 text-gray-900">
+		<a
+			href="#app"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded">
+			Saltar al contenido principal
+		</a>
 
-    <!-- Navegación compartida (lista semántica) -->
-    <nav
-      class="fixed top-0 left-0 w-full bg-gray-900 text-white z-50"
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center py-4">
-          <a
-            href="#/"
-            class="text-xl font-bold hover:text-blue-400 transition-colors"
-            aria-label="Inicio"
-            >Portafolio</a
-          >
-          <ul class="flex gap-6">
-            <li>
-              <a
-                href="#/"
-                class="hover:text-blue-400 transition-colors"
-                aria-current="page"
-                >Inicio</a
-              >
-            </li>
-            <li>
-              <a href="#/sobre" class="hover:text-blue-400 transition-colors"
-                >Sobre</a
-              >
-            </li>
-            <li>
-              <a
-                href="#/proyectos"
-                class="hover:text-blue-400 transition-colors"
-                >Proyectos</a
-              >
-            </li>
-            <li>
-              <a href="#/contacto" class="hover:text-blue-400 transition-colors"
-                >Contacto</a
-              >
-            </li>
-            <li>
-              <a
-                href="#/tipografia"
-                class="hover:text-blue-400 transition-colors"
-                >Tipografía</a
-              >
-            </li>
-            <li>
-              <a
-                href="#/componentes"
-                class="hover:text-blue-400 transition-colors"
-                >Componentes</a
-              >
-            </li>
-            <li>
-              <a href="#/layouts" class="hover:text-blue-400 transition-colors"
-                >Layouts</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+		<!-- Navegación compartida (lista semántica) -->
+		<nav
+			class="fixed top-0 left-0 w-full bg-gray-900 text-white z-50 shadow-lg"
+			role="navigation"
+			aria-label="Navegación principal">
+			<div class="mx-auto px-4">
+				<div class="flex justify-between items-center py-4">
+					<a href="#/" class="text-4xl font-bold hover:text-gray-300 transition-colors" aria-label="Inicio">Portfolio</a>
+					<ul class="flex gap-6">
+						<li><a href="#/" class="hover:text-gray-300 transition-colors" aria-current="page">Inicio</a></li>
+						<li><a href="#/about" class="hover:text-gray-300 transition-colors">Acerca de</a></li>
+						<li><a href="#/projects" class="hover:text-gray-300 transition-colors">Proyectos</a></li>
+						<li><a href="#/contact" class="hover:text-gray-300 transition-colors">Contacto</a></li>
+						<li><a href="#/components" class="hover:text-gray-300 transition-colors">Componentes</a></li>
+						<li><a href="#/layouts" class="hover:text-gray-300 transition-colors">Diseños</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 
-    <!-- Área de contenido principal: no fixed to allow scrolling. Añadimos padding
-         superior e inferior para que el contenido no quede oculto por la nav/footer fijas. -->
-    <main id="app" class="min-h-screen pt-20 pb-24" role="main">
-      <!-- Views will be rendered here -->
-    </main>
+		<!-- Área de contenido principal -->
+		<main id="app" class="min-h-screen pt-20 pb-24 flex items-center justify-center" role="main">
+			<!-- Las plantillas de vistas son externas en ./src/views/*.html y son cargadas de forma lazy por el router. -->
+		</main>
 
-    <!-- Footer compartido -->
-    <footer
-      class="fixed bottom-0 left-0 w-full z-50 bg-gray-800 text-white py-8"
-      role="contentinfo"
-    >
-      <div class="container mx-auto px-4 text-center">
-        <p>
-          &copy; 2025 Portafolio SPA. Construido con Tailwind & JavaScript
-          vanilla.
-        </p>
-      </div>
-    </footer>
-  </body>
+		<!-- Pie de página compartido -->
+		<footer class="fixed bottom-0 left-0 w-full z-50 bg-gray-800 text-white py-8" role="contentinfo">
+			<div class="container mx-auto px-4 text-center">
+				<p class="text-lg">&copy; 2025 Portfolio SPA. Construido con Tailwind y Vanilla JS.</p>
+			</div>
+		</footer>
+	</body>
 </html>

@@ -1,48 +1,69 @@
-class SimpleRouter {
-  constructor(routes) {
-    this.routes = routes;
-    this.currentView = null;
+// demo/src/router.js
+export class SimpleRouter {
+	constructor(routes) {
+		this.routes = routes; // { '/': { templateId, templateUrl, onMount? }, ... }
+		this.currentView = null;
+		window.addEventListener('hashchange', () => this.handleRoute());
+		window.addEventListener('load', () => this.handleRoute());
+	}
 
-    // Escuchar cambios de hash
-    window.addEventListener("hashchange", () => this.handleRoute());
-    window.addEventListener("load", () => this.handleRoute());
-  }
+	async handleRoute() {
+		const hash = window.location.hash.slice(1) || '/';
+		const route = this.routes[hash] || this.routes[404];
+		if (route !== this.currentView) {
+			await this.renderView(route);
+			this.updateActiveNav(hash);
+			this.currentView = route;
+		}
+	}
 
-  handleRoute() {
-    const hash = window.location.hash.slice(1) || "/";
-    const route = this.routes[hash] || this.routes["404"];
+	async renderView(route) {
+		const app = document.getElementById('app');
+		app.textContent = '';
 
-    if (route !== this.currentView) {
-      this.renderView(route);
-      this.updateActiveNav(hash);
-      this.currentView = route;
-    }
-  }
+		// Handle JavaScript components
+		if (route.component && route.component.template) {
+			app.innerHTML = route.component.template;
+			if (typeof route.onMount === 'function') route.onMount(app);
+			return;
+		}
 
-  renderView(route) {
-    const app = document.getElementById("app");
-    app.innerHTML = route.template;
+		// Fallback for template-based routes
+		await ensureTemplateAvailable(route.templateId, route.templateUrl);
 
-    // Ejecutar JavaScript específico de la vista
-    if (route.script) {
-      route.script();
-    }
-  }
+		const tpl = document.getElementById(route.templateId);
+		if (!tpl) {
+			app.textContent = 'Plantilla no encontrada';
+			return;
+		}
 
-  updateActiveNav(currentHash) {
-    // Solo considerar enlaces del router SPA que empiezan por "#/".
-    // Evita tocar anclas internas como "#app" (skip links, enlaces de sección).
-    document.querySelectorAll('nav a[href^="#/"]').forEach((link) => {
-      link.removeAttribute("aria-current");
-    });
+		app.appendChild(tpl.content.cloneNode(true));
+		if (typeof route.onMount === 'function') route.onMount(app);
+	}
 
-    // currentHash es como "/", "/sobre", ...
-    // Construimos el selector completo como `#${currentHash}` para coincidir con hrefs (ej. href="#/sobre").
-    const activeLink = document.querySelector(`nav a[href="#${currentHash}"]`);
-    if (activeLink) {
-      activeLink.setAttribute("aria-current", "page");
-    }
-  }
+	updateActiveNav(currentHash) {
+		document.querySelectorAll('nav a[href^="#/"]').forEach((link) => {
+			link.removeAttribute('aria-current');
+		});
+		const activeLink = document.querySelector(`nav a[href="#${currentHash}"]`);
+		if (activeLink) activeLink.setAttribute('aria-current', 'page');
+	}
 }
 
-export default SimpleRouter;
+const templateCache = new Set();
+
+async function ensureTemplateAvailable(templateId, templateUrl) {
+	if (document.getElementById(templateId)) return;
+	if (!templateUrl || templateCache.has(templateId)) return;
+
+	const res = await fetch(templateUrl, { credentials: 'same-origin' });
+	if (!res.ok) throw new Error(`Error al cargar plantilla: ${templateUrl}`);
+	const html = await res.text();
+	const doc = new DOMParser().parseFromString(html, 'text/html');
+	const fetchedTemplate = doc.querySelector('template');
+	if (!fetchedTemplate || !fetchedTemplate.id) {
+		throw new Error(`No se encontró <template id="..."> en ${templateUrl}`);
+	}
+	document.body.appendChild(fetchedTemplate);
+	templateCache.add(fetchedTemplate.id);
+}
