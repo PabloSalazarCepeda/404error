@@ -1,0 +1,22 @@
+<!-- src/components/button-primary.html -->
+<template id="button-primary">
+	<button
+		class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md border border-transparent bg-primary-500 text-white hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+		<!-- 
+			⚠️ Importante: El atributo `is="button-primary"` mostrado arriba NO funcionará por sí solo en HTML estándar y no convierte automáticamente tu botón en un componente reutilizable basado en <template>.
+   			
+			En la web, el atributo `is=""` solo es válido para *custom built-in elements* (Web Components definidos con JavaScript y extendiendo tags nativos), y requiere registro explícito en JavaScript usando `customElements.define`. Los elementos <template> por sí mismos no pueden usarse con `is=""`.
+   			
+			Forma correcta: debes cargar el `<template>` desde tu HTML y clonarlo por JavaScript para reutilizarlo:
+   			
+			  // Cargar y usar un componente de botón en JS
+			  const tpl = document.getElementById('button-primary');
+			  const btn = tpl.content.cloneNode(true);
+			  btn.querySelector('button').textContent = 'Enviar';
+			  document.body.appendChild(btn);
+   
+			Así puedes reutilizar el botón cambiando el contenido insertado en el clon, pero *no* mediante is="button-primary".
+		-->
+		<slot></slot>
+	</button>
+</template>

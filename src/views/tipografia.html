@@ -1,6 +1,5 @@
-export default {
-  template: `
-    <section class="py-16 bg-gradient-to-br from-purple-50 to-blue-50 min-h-screen">
+<template id="view-components">
+    <section class="py-16 pt-28 bg-gradient-to-br from-purple-50 to-blue-50 min-h-screen">
       <div class="container mx-auto px-4 max-w-4xl">
         <h1 class="text-5xl font-bold text-gray-900 mb-4">Tipografía y Color</h1>
         <p class="text-xl text-gray-600 mb-8">Explorando la escala tipográfica y el sistema de colores de Tailwind</p>
@@ -22,9 +21,23 @@ export default {
           <div class="bg-purple-500 text-white p-4 rounded text-center font-semibold">Morado</div>
           <div class="bg-red-500 text-white p-4 rounded text-center font-semibold">Rojo</div>
         </div>
+        <div class="container mx-auto px-4">
+			<h1 class="text-4xl font-bold text-gray-900 mb-8 pt-4 text-center">Sistema de Componentes</h1>
+
+			<!-- Sistema de Botones -->
+			<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+				<h2 class="text-2xl font-bold text-gray-900 mb-4">Botones</h2>
+				<div class="flex flex-wrap gap-4" id="buttons-container">
+					<!-- Los botones se clonarán aquí dinámicamente -->
+				</div>
+			</div>
+
+			<!-- Aquí añadirás más componentes en los siguientes pasos -->
+
+
+		</div>
         
-        <a href="#/" class="inline-block mt-8 text-blue-600 hover:text-blue-700 font-medium">← Volver a Inicio</a>
+        <a href="#/" class="inline-block text-blue-600 hover:text-blue-700 font-medium">← Volver a Inicio</a>
       </div>
     </section>
-  `,
-};
+  </template>
