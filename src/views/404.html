@@ -1,26 +1,36 @@
 <template id="view-404">
-  <section class="fixed inset-0 w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-between px-16" style="background-image: url('./assets/pink space.jpg');">
-    <!-- Sign on the left -->
-    <div class="relative">
-      <!-- Alien Poste with glow -->
-      <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 shadow-xl" style="height: 40vh; background: linear-gradient(to bottom, #00ff88 0%, #00cc66 50%, #008844 100%); box-shadow: 0 0 20px rgba(0, 255, 136, 0.6), 0 0 40px rgba(0, 255, 136, 0.3);"></div>
-      
-      <!-- Alien holographic sign -->
-      <div class="relative text-white px-10 py-8 rounded-2xl transform -rotate-2 z-10 backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(0, 255, 200, 0.15) 0%, rgba(138, 43, 226, 0.25) 50%, rgba(255, 0, 200, 0.15) 100%); border: 3px solid rgba(0, 255, 200, 0.6); box-shadow: 0 0 30px rgba(0, 255, 200, 0.4), inset 0 0 20px rgba(138, 43, 226, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);">
-        <!-- Holographic scan lines -->
-        <div class="absolute inset-0 opacity-20 pointer-events-none rounded-2xl" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 200, 0.1) 2px, rgba(0, 255, 200, 0.1) 4px);"></div>
-        
-        <h1 class="text-6xl font-bold mb-4 relative" style="text-shadow: 0 0 10px rgba(0, 255, 200, 0.8), 0 0 20px rgba(0, 255, 200, 0.5), 0 0 30px rgba(138, 43, 226, 0.5); color: #00ffcc; font-family: 'Courier New', monospace; letter-spacing: 0.1em;">404</h1>
-        <p class="text-xl mb-6 relative" style="color: #00ffcc; text-shadow: 0 0 5px rgba(0, 255, 200, 0.6); font-family: 'Courier New', monospace;">Welcome to 3i/ATLAS</p>
-        <a href="#/" class="inline-block px-8 py-3 rounded-lg font-bold transition-all shadow-lg relative overflow-hidden" style="background: linear-gradient(135deg, #00ff88, #00ccff); color: #0a0015; text-shadow: none; box-shadow: 0 0 15px rgba(0, 255, 136, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);">
-          <span class="relative z-10">Visit The Moon</span>
-        </a>
+  <!-- Full screen space scene -->
+  <section class="fixed inset-0 w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-start gap-10 px-8 md:px-16 mobile-stack" style="background-image: url('assets/pink space.jpg');" aria-labelledby="error-heading">
+    <!-- Decorative starfield layers -->
+  <div class="starfield pointer-events-none" aria-hidden="true"></div>
+  <div class="planet-glow pointer-events-none" aria-hidden="true"></div>
+  <div class="space-fog pointer-events-none" aria-hidden="true"></div>
+    <!-- Sign + aliens wrapper -->
+  <div class="flex items-center gap-10 w-full">
+      <!-- Sign column -->
+  <div class="relative flex flex-col items-start">
+        <!-- Post -->
+        <div class="post-glow" aria-hidden="true"></div>
+        <!-- Sign panel -->
+  <div class="sign-panel animate-float">
+          <div class="scan-lines" aria-hidden="true"></div>
+          <h1 id="error-heading" class="text-6xl md:text-7xl font-extrabold tracking-wider font-mono gradient-text animate-gradient mb-4">404</h1>
+          <p class="text-xl md:text-2xl font-mono text-cyan-100 mb-6">Welcome to 3i / ATLAS</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#/" class="btn-primary">Visit The Moon</a>
+            <a href="#/" class="btn-secondary">Return Home</a>
+          </div>
+        </div>
+      </div>
+      <!-- Aliens anchored to planet curve -->
+      <div class="relative flex-1 flex items-end justify-center md:justify-end">
+        <div class="aliens-anchor">
+          <div class="aliens-shadow" aria-hidden="true"></div>
+          <img src="assets/bitmap.png" alt="Two friendly pixel aliens waving" class="max-h-[34vh] md:max-h-[42vh] w-auto object-contain aliens-ground alien-glow" />
+        </div>
       </div>
     </div>
-
-    <!-- Aliens on the right -->
-    <div class="relative mb-31'2">
-      <img src="./assets/bitmap.png" alt="Aliens" class="h-128 w-auto object-contain drop-shadow-2xl" style="filter: drop-shadow(0 0 20px rgba(0, 255, 200, 0.3)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));">
-    </div>
+    <!-- Ambient edge gradient for depth -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,transparent_0%,transparent_55%,rgba(0,0,0,0.55)_90%)] pointer-events-none" aria-hidden="true"></div>
   </section>
 </template>

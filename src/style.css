@@ -4,8 +4,6 @@
 /* 
 Razones de accesibilidad: 
 Estas clases CSS personalizadas soportan el enlace "Saltar al contenido principal", una característica de accesibilidad esencial. 
-- `.sr-only` oculta visualmente el enlace para que permanezca disponible para lectores de pantalla, ayudando a usuarios de teclado y tecnología asistiva a evitar navegación repetitiva.
-- `.focus\:not-sr-only:focus` hace el enlace visible cuando está enfocado (usualmente con la tecla Tab), permitiendo a usuarios de teclado activarlo fácilmente.
 
 Las clases de utilidad de Tailwind no cubren completamente este patrón, por lo que usamos CSS personalizado para asegurar accesibilidad fuerte para todos los usuarios.
 */
@@ -30,4 +28,226 @@ Las clases de utilidad de Tailwind no cubren completamente este patrón, por lo 
 	overflow: visible;
 	clip: auto;
 	white-space: normal;
+}
+
+/* ------------------------------
+	 Space 404 Page Enhancements
+	 ------------------------------
+	 Added custom utility classes to complement Tailwind for the 404 scene:
+	 - .starfield        : Multi-layer animated stars & subtle parallax
+	 - .sign-panel       : Holographic / glass sign styling
+	 - .post-glow        : Vertical luminous post behind the sign
+	 - .scan-lines       : Animated scan line overlay (respect prefers-reduced-motion)
+	 - .gradient-text    : Futuristic gradient heading text
+	 - .alien-glow       : Glow around alien bitmap
+	 - .animate-float / .animate-float-slow : Gentle float animations
+	 - .btn-primary / .btn-secondary : Branded button styles
+*/
+
+/* Starfield background layers */
+.starfield {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+}
+.starfield::before,
+.starfield::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-repeat: repeat;
+	background-size: 800px 800px;
+	animation: drift 120s linear infinite;
+	opacity: 0.55;
+}
+.starfield::before {
+	background-image:
+		radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.7) 50%, transparent 51%),
+		radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.6) 50%, transparent 51%),
+		radial-gradient(2px 2px at 40% 60%, rgba(255,255,255,0.9) 50%, transparent 51%),
+		radial-gradient(1px 1px at 85% 25%, rgba(255,255,255,0.6) 50%, transparent 51%),
+		radial-gradient(1px 1px at 10% 75%, rgba(255,255,255,0.5) 50%, transparent 51%);
+}
+.starfield::after {
+	animation-duration: 200s;
+	background-image:
+		radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.45) 50%, transparent 51%),
+		radial-gradient(2px 2px at 55% 35%, rgba(255,255,255,0.75) 50%, transparent 51%),
+		radial-gradient(1px 1px at 88% 66%, rgba(255,255,255,0.6) 50%, transparent 51%),
+		radial-gradient(1px 1px at 33% 12%, rgba(255,255,255,0.5) 50%, transparent 51%);
+	mix-blend-mode: screen;
+}
+
+@keyframes drift {
+	from { transform: translateY(0); }
+	to { transform: translateY(-800px); }
+}
+
+/* Floating animations */
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-slow { animation: float 10s ease-in-out infinite; }
+@keyframes float {
+	0%,100% { transform: translateY(-4px); }
+	50% { transform: translateY(4px); }
+}
+
+/* Sign panel styling (glass hologram) */
+.sign-panel {
+	position: relative;
+	backdrop-filter: blur(8px) saturate(140%);
+	background: linear-gradient(135deg, rgba(0,255,200,0.12) 0%, rgba(138,43,226,0.35) 55%, rgba(255,0,160,0.18) 100%);
+	border: 2px solid rgba(0,255,200,0.55);
+	box-shadow: 0 0 24px rgba(0,255,200,0.35), inset 0 0 20px rgba(138,43,226,0.35), 0 8px 32px rgba(0,0,0,0.5);
+	padding: 2.5rem 3rem;
+	border-radius: 1.25rem;
+	max-width: 480px;
+}
+
+.post-glow {
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	transform: translateX(-50%);
+	width: 0.9rem;
+	height: 42vh;
+	background: linear-gradient(to bottom,#00ff88 0%, #00cc66 50%, #008844 100%);
+	box-shadow: 0 0 16px rgba(0,255,136,0.6),0 0 42px rgba(0,255,136,0.28);
+	border-radius: 0.4rem;
+}
+
+.scan-lines {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	pointer-events: none;
+	background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,200,0.08) 2px, rgba(0,255,200,0.08) 4px);
+	mix-blend-mode: overlay;
+	animation: scan 3.5s linear infinite;
+}
+@keyframes scan {
+	0% { transform: translateY(-4px); }
+	100% { transform: translateY(4px); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.animate-float, .animate-float-slow, .scan-lines { animation: none !important; }
+}
+
+/* Theme variables for consistent color usage */
+:root {
+	--color-cyan-neon: #00ffe1;
+	--color-indigo-soft: #6f7dff;
+	--color-violet-pop: #d066ff;
+	--color-pink-glow: #ff88e7;
+	--glass-start: rgba(0,255,200,0.12);
+	--glass-mid: rgba(138,43,226,0.35);
+	--glass-end: rgba(255,0,160,0.18);
+	--planet-h: 30vh;
+}
+
+.gradient-text {
+	background: linear-gradient(90deg,var(--color-cyan-neon) 0%,var(--color-indigo-soft) 45%,var(--color-violet-pop) 70%,var(--color-pink-glow) 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	filter: drop-shadow(0 0 6px rgba(0,255,200,0.35));
+}
+
+.alien-glow {
+	filter: drop-shadow(0 0 12px rgba(0,255,200,0.45)) drop-shadow(0 4px 22px rgba(0,0,0,0.6));
+}
+/* Pixel crisp & reduced excessive glow */
+.alien-glow { image-rendering: pixelated; filter: drop-shadow(0 0 6px rgba(0,255,200,0.35)) drop-shadow(0 4px 16px rgba(0,0,0,0.55)); }
+/* Anchor aliens to planet curve */
+.aliens-anchor { position: absolute; bottom: var(--planet-h); right: clamp(2rem, 9vw, 11rem); transform: translateY(2px); display: flex; align-items: flex-end; }
+.aliens-shadow { position: absolute; left: 50%; bottom: -0.6rem; transform: translateX(-50%); width: 68%; height: 18px; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.45), transparent 70%); filter: blur(4px); opacity: .65; }
+
+/* Grounded aliens (stop float, subtle idle sway) */
+.aliens-ground { animation: sway 7s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes sway { 0%,100% { transform: translateY(0) rotate(-1deg);} 50% { transform: translateY(2px) rotate(1deg);} }
+
+/* Mobile layout stacking */
+@media (max-width: 768px) {
+	.sign-panel { padding: 2rem 2.2rem; max-width: 100%; }
+	.post-glow { height: 30vh; }
+	.mobile-stack { flex-direction: column; align-items: flex-start; }
+	.mobile-stack .sign-panel { order: 1; }
+	.mobile-stack .aliens-ground { order: 2; margin-top: 1.5rem; }
+}
+/* Animated gradient heading */
+.animate-gradient { background-size: 200% 200%; animation: gradientShift 14s ease-in-out infinite; }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+/* Panel subtle pulse */
+@keyframes panelPulse { 0%,100% { box-shadow: 0 0 24px rgba(0,255,200,0.35), inset 0 0 20px rgba(138,43,226,0.35), 0 8px 32px rgba(0,0,0,0.5);} 50% { box-shadow: 0 0 28px rgba(0,255,200,0.5), inset 0 0 26px rgba(138,43,226,0.5), 0 8px 36px rgba(0,0,0,0.55);} }
+.sign-panel { animation: panelPulse 12s ease-in-out infinite; }
+
+/* Star twinkle overlay */
+.starfield::before { animation: drift 120s linear infinite, twinkle 10s ease-in-out infinite; }
+.starfield::after { animation: drift 200s linear infinite, twinkle 14s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { opacity: 0.55; } 40% { opacity: 0.75; } 50% { opacity: 0.35; } 60% { opacity: 0.8; } }
+
+/* Button ripple effect */
+.btn-primary::after, .btn-secondary::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,0.35), transparent 60%); opacity: 0; transition: opacity .4s; }
+.btn-primary:hover::after, .btn-secondary:hover::after { opacity: 0.5; }
+
+/* Smooth transform transitions for parallax targets */
+.parallax-target { transition: transform .4s ease; will-change: transform; }
+
+/* Planet horizon glow */
+.planet-glow { position:absolute; left:0; width:100%; height:14vh; bottom: var(--planet-h); pointer-events:none; background:radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.18) 25%, rgba(255,0,160,0.12) 55%, transparent 70%); mix-blend-mode:screen; filter:blur(6px); opacity:.55; }
+
+/* Space fog layer */
+.space-fog { position:absolute; inset:0; background:
+	radial-gradient(circle at 30% 60%, rgba(255,255,255,0.05), transparent 60%),
+	radial-gradient(circle at 70% 40%, rgba(255,255,255,0.04), transparent 55%),
+	radial-gradient(circle at 50% 50%, rgba(255,0,160,0.06), transparent 65%);
+	animation:fogShift 48s linear infinite; mix-blend-mode:screen; opacity:.25; }
+@keyframes fogShift { 0% { transform:translate3d(0,0,0);} 50% { transform:translate3d(40px,-20px,0);} 100% { transform:translate3d(0,0,0);} }
+
+/* Shooting star */
+.shooting-star { position:fixed; top:0; left:0; width:2px; height:2px; background:linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0)); border-radius:50%; pointer-events:none; animation:starFly 1.4s cubic-bezier(.15,.55,.4,.85) forwards; filter:drop-shadow(0 0 6px rgba(255,255,255,.7)); }
+@keyframes starFly { 0% { transform:translate3d(var(--sx), var(--sy),0) scale(1); opacity:1;} 70% { opacity:1;} 100% { transform:translate3d(calc(var(--sx) + var(--dx)), calc(var(--sy) + var(--dy)),0) scale(.2); opacity:0;} }
+
+/* Button focus states */
+.btn-primary:focus-visible, .btn-secondary:focus-visible { outline:none; box-shadow:0 0 0 3px rgba(0,255,200,0.55), 0 0 12px rgba(0,160,255,0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient, .sign-panel, .starfield::before, .starfield::after { animation: none !important; }
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.85rem 1.6rem;
+	font-weight: 600;
+	border-radius: 0.85rem;
+	font-family: ui-monospace, monospace;
+	letter-spacing: 0.05em;
+	transition: background .25s, transform .25s, box-shadow .25s;
+	overflow: hidden;
+}
+.btn-primary {
+	background: linear-gradient(135deg,#00ffb3,#00b3ff 60%,#6f00ff);
+	color:#08121a;
+	box-shadow: 0 0 0 0 rgba(0,255,200,0.4);
+}
+.btn-primary:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 28px -6px rgba(0,255,200,0.4),0 0 18px rgba(0,160,255,0.35);
+}
+.btn-secondary {
+	background: rgba(255,255,255,0.07);
+	color:#c3fefe;
+	border: 1px solid rgba(0,255,200,0.4);
+}
+.btn-secondary:hover {
+	background: rgba(0,255,200,0.15);
+	transform: translateY(-3px);
+	box-shadow: 0 8px 28px -6px rgba(0,255,200,0.3);
 }
