@@ -144,6 +144,8 @@ Las clases de utilidad de Tailwind no cubren completamente este patrón, por lo 
 	--glass-mid: rgba(138,43,226,0.35);
 	--glass-end: rgba(255,0,160,0.18);
 	--planet-h: 30vh;
+	--aliens-offset: 24px;
+    --alien-scale: 1.35;
 }
 
 .gradient-text {
@@ -160,12 +162,64 @@ Las clases de utilidad de Tailwind no cubren completamente este patrón, por lo 
 /* Pixel crisp & reduced excessive glow */
 .alien-glow { image-rendering: pixelated; filter: drop-shadow(0 0 6px rgba(0,255,200,0.35)) drop-shadow(0 4px 16px rgba(0,0,0,0.55)); }
 /* Anchor aliens to planet curve */
-.aliens-anchor { position: absolute; bottom: var(--planet-h); right: clamp(2rem, 9vw, 11rem); transform: translateY(2px); display: flex; align-items: flex-end; }
-.aliens-shadow { position: absolute; left: 50%; bottom: -0.6rem; transform: translateX(-50%); width: 68%; height: 18px; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.45), transparent 70%); filter: blur(4px); opacity: .65; }
+.aliens-anchor { position: fixed; bottom: var(--planet-h); right: clamp(2rem, 9vw, 11rem); transform: translateY(var(--aliens-offset)); display: flex; align-items: flex-end; z-index: 60; cursor: pointer; }
+.aliens-shadow { position: absolute; left: 50%; bottom: -0.2rem; transform: translateX(-50%); width: 68%; height: 18px; background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.45), transparent 70%); filter: blur(6px); opacity: .65; }
 
 /* Grounded aliens (stop float, subtle idle sway) */
 .aliens-ground { animation: sway 7s ease-in-out infinite; transform-origin: 50% 100%; }
-@keyframes sway { 0%,100% { transform: translateY(0) rotate(-1deg);} 50% { transform: translateY(2px) rotate(1deg);} }
+@keyframes sway { 0%,100% { transform: translateY(0) rotate(-1deg) scale(var(--alien-scale));} 50% { transform: translateY(3px) rotate(1.2deg) scale(var(--alien-scale));} }
+
+/* Aliens hover bounce + glow pulse */
+.aliens-anchor:hover .aliens-ground { animation: alienBounce .9s ease-out; }
+@keyframes alienBounce {
+	0% { transform: translateY(0) rotate(0deg) scale(var(--alien-scale)); }
+	35% { transform: translateY(-10px) rotate(2deg) scale(var(--alien-scale)); }
+	70% { transform: translateY(0) rotate(-1deg) scale(var(--alien-scale)); }
+	100% { transform: translateY(0) rotate(0deg) scale(var(--alien-scale)); }
+}
+.aliens-anchor:hover .alien-glow { animation: glowPulse 1.2s ease-in-out; }
+@keyframes glowPulse {
+	0%,100% { filter: drop-shadow(0 0 6px rgba(0,255,200,0.35)) drop-shadow(0 4px 16px rgba(0,0,0,0.55)); }
+	50% { filter: drop-shadow(0 0 14px rgba(0,255,200,0.65)) drop-shadow(0 6px 22px rgba(0,0,0,0.6)); }
+}
+
+/* Explosion state: fade/scale away the bitmap but keep anchor position */
+.aliens-anchor.exploded .aliens-ground {
+	animation: none !important;
+	opacity: 0;
+	transform: translateY(var(--aliens-offset)) scale(0.6) rotate(-8deg);
+	transition: opacity .25s ease, transform .25s ease;
+}
+
+/* Particle + shockwave visuals */
+.particle {
+	position: fixed;
+	left: 0; top: 0;
+	width: 12px; height: 12px;
+	border-radius: 9999px;
+	background: radial-gradient(circle, rgba(0,255,200,.95) 0%, rgba(0,160,255,.65) 55%, rgba(0,160,255,0) 72%);
+	filter: drop-shadow(0 0 10px rgba(0,255,200,.9));
+	pointer-events: none;
+	animation: particleFly var(--dur, 950ms) cubic-bezier(.2,.65,.25,1) forwards;
+}
+@keyframes particleFly {
+	0% { transform: translate3d(var(--x0), var(--y0), 0) scale(1); opacity: 1; }
+	100% { transform: translate3d(calc(var(--x0) + var(--tx)), calc(var(--y0) + var(--ty)), 0) scale(.35); opacity: 0; }
+}
+.shockwave {
+	position: fixed;
+	left: 0; top: 0;
+	width: 16px; height: 16px;
+	border: 3px solid rgba(0,255,200,.65);
+	border-radius: 9999px;
+	pointer-events: none;
+	filter: drop-shadow(0 0 12px rgba(0,255,200,.7));
+	animation: shock 720ms ease-out forwards;
+}
+@keyframes shock {
+	0% { transform: translate3d(var(--x0), var(--y0), 0) scale(.2); opacity: .9; }
+	100% { transform: translate3d(var(--x0), var(--y0), 0) scale(22); opacity: 0; }
+}
 
 /* Mobile layout stacking */
 @media (max-width: 768px) {
